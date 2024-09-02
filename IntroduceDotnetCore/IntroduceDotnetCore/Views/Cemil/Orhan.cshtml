@@ -1,4 +1,4 @@
-﻿
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
 }
@@ -14,6 +14,14 @@
     <p>Burası Orhan View'i</p>
     <p>Gelen değer:  @ViewBag.Deger</p>
     <p>Gelen isim:  @ViewBag.Ad</p>
-
+    @if (ViewBag.Saat > 12)
+    {
+        <p>İyi günler</p>
+    }
+    else if(ViewBag.Saat < 12)
+    {
+        <p>Günaydın</p>
+    }
+    <a asp-action="Kayit" asp-controller="Kullanici" >Kullanıcı Kayıt</a>
 </body>
 </html>

@@ -3,6 +3,10 @@ builder.Services.AddControllersWithViews();
 
 
 var app = builder.Build();
+
+var message = builder.Configuration.GetValue<string>("Info:Message");
+app.Logger.LogInformation($"Gelen mesaj: {message}");
+
 //Ctrl K+C
 app.UseRouting();
 

@@ -16,6 +16,7 @@ namespace IntroduceDotnetCore.Controllers
             var result = value.ToUpper();
             ViewBag.Deger = test;
             ViewBag.Ad = ad;
+            ViewBag.Saat = DateTime.Now.Hour;
             return View();
         }
     }

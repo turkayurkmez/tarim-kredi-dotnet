@@ -1,0 +1,33 @@
+﻿@model IntroduceDotnetCore.Models.User
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Kayit</title>
+</head>
+<body>
+    <form asp-action="Kayit"  >
+        <input asp-for="UserName" placeholder="Kullanıcı adı"  />
+        <span asp-validation-for="UserName"></span>
+        <br />
+        <input asp-for="Pass"  placeholder="Şifre"/>
+        <span asp-validation-for="Pass"></span>
+        <br />
+        
+
+        <input asp-for="Email" placeholder="E-posta"/>
+        <span asp-validation-for="Email"></span>
+
+        <br />
+
+        <button type="submit">Kayıt ol</button>
+
+    </form>
+</body>
+</html>
