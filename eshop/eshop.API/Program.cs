@@ -1,7 +1,9 @@
 using eshop.API.Services;
 using eshop.Application.Contract.Repositories;
 using eshop.Application.Features.Products.Queries.GetAllProducts;
+using eshop.Persistence.Data;
 using eshop.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetProductsQueryHandler).Assembly));
 builder.Services.AddScoped<IProductRepository, FakeProductRepository>();
+
+var connectionString = builder.Configuration.GetConnectionString("db");
+
+builder.Services.AddDbContext<EshopDbContext>(opt => opt.UseSqlServer(connectionString));
 
 
 

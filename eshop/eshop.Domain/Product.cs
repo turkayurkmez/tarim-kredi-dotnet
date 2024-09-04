@@ -12,6 +12,8 @@ namespace eshop.Domain
         public int Id { get; set; }
         [Required(ErrorMessage = "Boş geçilemez")]
         [MinLength(3, ErrorMessage = "En az üç harfli olmalı")]
+        [MaxLength(100, ErrorMessage = "En fazla 100 harfli olmalı")]
+
         public string Name { get; set; }
         public string? Description { get; set; }
         [DataType(DataType.Currency)]
@@ -21,5 +23,10 @@ namespace eshop.Domain
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int? Stock { get; set; }
+
+        //Navigation Property
+        public Category? Category { get; set; }
+        public int? CategoryId { get; set; }
+
     }
 }
