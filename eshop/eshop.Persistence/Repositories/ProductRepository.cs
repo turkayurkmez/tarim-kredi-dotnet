@@ -2,24 +2,26 @@
 using eshop.Domain;
 using eshop.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eshop.Persistence.Repositories
 {
     public class ProductRepository(EshopDbContext dbContext) : IProductRepository
     {
-        public Task CreateAsync(Product entity)
+        public async Task CreateAsync(Product entity)
         {
-            throw new NotImplementedException();
+            await dbContext.Products.AddAsync(entity);
+            await dbContext.SaveChangesAsync();
+
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await dbContext.Products.AsNoTracking()
+                                                  .FirstOrDefaultAsync(p => p.Id == id);
+            //product.Price *= 0.50m;
+
+            dbContext.Products.Remove(product);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
@@ -27,19 +29,21 @@ namespace eshop.Persistence.Repositories
             return await dbContext.Products.ToListAsync();
         }
 
-        public Task<Product> GetByIdAsync(int id)
+        public async Task<Product> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<IEnumerable<Product>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return dbContext.Products.Where(p => p.Name.Contains(name)).AsEnumerable();
+
         }
 
-        public Task UpdateAsync(Product entity)
+        public async Task UpdateAsync(Product entity)
         {
-            throw new NotImplementedException();
+            dbContext.Products.Update(entity);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

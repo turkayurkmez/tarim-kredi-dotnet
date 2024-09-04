@@ -1,8 +1,9 @@
 ﻿using eshop.API.Models;
 using eshop.API.Services;
+using eshop.Application.Features.Products.Commands.CreateProduct;
 using eshop.Application.Features.Products.Queries.GetAllProducts;
+using eshop.Application.Features.Products.Queries.GetProduct;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eshop.API.Controllers
@@ -14,12 +15,12 @@ namespace eshop.API.Controllers
     {
         //REST: REpresentational State Transfer
 
-        private readonly IProductService productService;
+       // private readonly IProductService productService;
         private readonly IMediator mediator;
 
-        public ProductsController(IProductService productService, IMediator mediator)
+        public ProductsController( IMediator mediator)
         {
-            this.productService = productService;
+         //   this.productService = productService;
             this.mediator = mediator;
         }
 
@@ -37,9 +38,10 @@ namespace eshop.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetProduct(int id)
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var product = productService.GetProductById(id);
+            var request = new GetProductRequest(id);
+            var product = await mediator.Send(request);
             if (product is not null)
             {
                 return Ok(product);
@@ -52,20 +54,20 @@ namespace eshop.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Search(string name)
         {
-            List<Product> products = productService.SearchByName(name);
-            return Ok(products);
+           // List<Product> products = productService.SearchByName(name);
+            return Ok();
         }
 
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
 
-        public IActionResult Create(Product product)
+        public async Task<IActionResult> Create(CreateNewProductRequest product)
         {
             if (ModelState.IsValid)
             {
-                //sonra...
-                return CreatedAtAction(nameof(GetProduct), routeValues: new { id = 5 }, null);
+                var result = await mediator.Send(product);
+                return CreatedAtAction(nameof(GetProduct), routeValues: new { id = result.Id }, null);
             }
             return BadRequest();
         }

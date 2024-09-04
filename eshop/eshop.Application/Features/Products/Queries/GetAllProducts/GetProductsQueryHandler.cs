@@ -1,10 +1,6 @@
 ﻿using eshop.Application.Contract.Repositories;
+using Mapster;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eshop.Application.Features.Products.Queries.GetAllProducts
 {
@@ -17,14 +13,16 @@ namespace eshop.Application.Features.Products.Queries.GetAllProducts
             //tüm ürünleri çek.
             var products = await productRepository.GetAllAsync();
             //dto'ya çevir ve döndür.
-            var result = products.Select(p => new ProductResponseDTO
-            {
-                Id = p.Id,
-                Description = p.Description,
-                ImageUrl = p.ImageUrl,
-                Name = p.Name,
-                Price = p.Price
-            }).ToList();
+
+            var result = products.Adapt<List<ProductResponseDTO>>();
+            //var result = products.Select(p => new ProductResponseDTO
+            //{
+            //    Id = p.Id,
+            //    Description = p.Description,
+            //    ImageUrl = p.ImageUrl,
+            //    Name = p.Name,
+            //    Price = p.Price
+            //}).ToList();
 
             return result;
         }

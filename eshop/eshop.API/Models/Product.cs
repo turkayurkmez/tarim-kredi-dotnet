@@ -6,7 +6,7 @@ namespace eshop.API.Models
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Boş geçilemez")]
-        [MinLength(3,ErrorMessage ="En az üç harfli olmalı")]
+        [MinLength(3, ErrorMessage = "En az üç harfli olmalı")]
         public string Name { get; set; }
         public string? Description { get; set; }
         [DataType(DataType.Currency)]

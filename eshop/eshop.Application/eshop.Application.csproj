@@ -7,14 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Products\Commands\CreateProduct\" />
     <Folder Include="Features\Products\Commands\DeleteProduct\" />
     <Folder Include="Features\Products\Commands\UpdateProduct\" />
-    <Folder Include="Features\Products\Queries\GetProduct\" />
     <Folder Include="Features\Products\Queries\SearchProduct\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="MediatR" Version="12.4.0" />
   </ItemGroup>
 
