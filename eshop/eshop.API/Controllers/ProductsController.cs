@@ -1,5 +1,7 @@
 ﻿using eshop.API.Models;
 using eshop.API.Services;
+using eshop.Application.Features.Products.Queries.GetAllProducts;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,20 +15,23 @@ namespace eshop.API.Controllers
         //REST: REpresentational State Transfer
 
         private readonly IProductService productService;
+        private readonly IMediator mediator;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IMediator mediator)
         {
             this.productService = productService;
+            this.mediator = mediator;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetProducts()
+        public async Task<IActionResult> GetProducts()
         {
             //IProductService productService = new ProductService();
-            var products = productService.GetProducts();
-            return Ok(products);
+            //var products = productService.GetProducts();
+            var result = await mediator.Send(new GetAllProductsRequest());
+            return Ok(result);
         }
 
         [HttpGet("{id:int}")]
