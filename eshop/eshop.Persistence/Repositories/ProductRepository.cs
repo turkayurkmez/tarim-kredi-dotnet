@@ -1,5 +1,7 @@
 ﻿using eshop.Application.Contract.Repositories;
 using eshop.Domain;
+using eshop.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace eshop.Persistence.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository(EshopDbContext dbContext) : IProductRepository
     {
         public Task CreateAsync(Product entity)
         {
@@ -20,9 +22,9 @@ namespace eshop.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await dbContext.Products.ToListAsync();
         }
 
         public Task<Product> GetByIdAsync(int id)

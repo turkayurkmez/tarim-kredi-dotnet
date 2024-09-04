@@ -18,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetProductsQueryHandler).Assembly));
-builder.Services.AddScoped<IProductRepository, FakeProductRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("db");
 
