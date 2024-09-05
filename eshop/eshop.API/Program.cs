@@ -23,6 +23,20 @@ var connectionString = builder.Configuration.GetConnectionString("db");
 
 builder.Services.AddDbContext<EshopDbContext>(opt => opt.UseSqlServer(connectionString));
 
+builder.Services.AddCors(option => 
+{
+    option.AddPolicy("allow", builder =>
+    {
+        //https://www.tarimkredi.org.tr/iletisim
+        //http://www.tarimkredi.org.tr/
+        //https://post.tarimkredi.org.tr/
+        //https://www.tarimkredi.org.tr:8081
+        builder.AllowAnyOrigin();
+        builder.AllowAnyMethod();
+        builder.AllowAnyHeader();
+
+    });
+});
 
 
 var app = builder.Build();
@@ -34,6 +48,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("allow");
 app.UseAuthorization();
 
 app.MapControllers();
