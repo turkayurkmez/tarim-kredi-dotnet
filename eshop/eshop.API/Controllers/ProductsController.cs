@@ -77,7 +77,7 @@ namespace eshop.API.Controllers
             //idempotent -> yan etkisi olmayan fonk.
             return Ok();
         }
-
+         
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

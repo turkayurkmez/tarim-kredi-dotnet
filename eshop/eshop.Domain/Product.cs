@@ -24,5 +24,7 @@ namespace eshop.Domain
         public Category? Category { get; set; }
         public int? CategoryId { get; set; }
 
+        
+
     }
 }

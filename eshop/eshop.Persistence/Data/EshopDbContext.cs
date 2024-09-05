@@ -49,6 +49,8 @@ namespace eshop.Persistence.Data
                     );
             //Ctrl + K + D
             base.OnModelCreating(modelBuilder);
+
+           
         }
     }
 }
