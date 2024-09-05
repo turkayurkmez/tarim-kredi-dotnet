@@ -3,3 +3,5 @@ https://developer.mozilla.org/en-US/docs/Glossary/Idempotent
 https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-8.0
 
 https://medium.com/@justindevx/a-guide-to-choosing-the-right-net-object-mapper-ab13c5623a70
+
+https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-pkce

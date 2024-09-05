@@ -3,7 +3,10 @@ using eshop.Application.Contract.Repositories;
 using eshop.Application.Features.Products.Queries.GetAllProducts;
 using eshop.Persistence.Data;
 using eshop.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetProductsQueryHandler).Assembly));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 var connectionString = builder.Configuration.GetConnectionString("db");
 
@@ -39,6 +44,22 @@ builder.Services.AddCors(option =>
 });
 
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(option => option.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = "tarimkredi.server",
+
+                    ValidateAudience = true,
+                    ValidAudience = "tarimkredi.client",
+
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("donulmez-aksamin-ufkundayiz-vakit-cok-gec")),
+
+                    ValidateIssuerSigningKey = true
+                });
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,6 +70,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("allow");
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -6,6 +6,7 @@ using eshop.Application.Features.Products.Queries.GetAllProducts;
 using eshop.Application.Features.Products.Queries.GetProduct;
 using eshop.Application.Features.Products.Queries.SearchProduct;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eshop.API.Controllers
@@ -66,13 +67,13 @@ namespace eshop.API.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-
+        [Authorize(Roles ="Admin,Editor")]
         public async Task<IActionResult> Create(CreateNewProductRequest product)
         {
             if (ModelState.IsValid)
             {
                 var result = await mediator.Send(product);
-                return CreatedAtAction(nameof(GetProduct), routeValues: new { id = result.Id }, null);
+                return CreatedAtAction(nameof(GetProduct), routeValues: new { id = result.Id }, result);
             }
             return BadRequest();
         }
