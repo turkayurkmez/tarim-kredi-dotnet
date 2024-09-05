@@ -1,8 +1,10 @@
 ﻿using eshop.API.Models;
 using eshop.API.Services;
 using eshop.Application.Features.Products.Commands.CreateProduct;
+using eshop.Application.Features.Products.Commands.UpdateProduct;
 using eshop.Application.Features.Products.Queries.GetAllProducts;
 using eshop.Application.Features.Products.Queries.GetProduct;
+using eshop.Application.Features.Products.Queries.SearchProduct;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +34,7 @@ namespace eshop.API.Controllers
             //IProductService productService = new ProductService();
             //var products = productService.GetProducts();
             var result = await mediator.Send(new GetAllProductsRequest());
-            return Ok(result);
+            return Ok(result); 
         }
 
         [HttpGet("{id:int}")]
@@ -52,10 +54,13 @@ namespace eshop.API.Controllers
 
         [HttpGet("[action]/{name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Search(string name)
+        public async Task<IActionResult> Search(string name)
         {
-           // List<Product> products = productService.SearchByName(name);
-            return Ok();
+            // List<Product> products = productService.SearchByName(name);
+            var request = new SearchProductRequest(name);
+
+            var response = await mediator.Send(request);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -72,10 +77,20 @@ namespace eshop.API.Controllers
             return BadRequest();
         }
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Product product)
+        public async Task<IActionResult> Update(int id, UpdateProductCommand product)
         {
             //idempotent -> yan etkisi olmayan fonk.
-            return Ok();
+            if (id != product.Id)
+            {
+                return BadRequest(new { Error = "talep edilen id ile ürün id'si farklı" });
+            }
+            if (ModelState.IsValid)
+            {
+                await mediator.Send(product);
+                return Ok();
+            }
+            return BadRequest();
+          
         }
          
         [HttpDelete("{id}")]

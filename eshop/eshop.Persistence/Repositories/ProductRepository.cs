@@ -24,9 +24,11 @@ namespace eshop.Persistence.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public  async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await dbContext.Products.ToListAsync();
+            //int last = pageNo + 2;
+            var result = await dbContext.Products.ToListAsync();
+            return result;
         }
 
         public async Task<Product> GetByIdAsync(int id)
@@ -36,6 +38,9 @@ namespace eshop.Persistence.Repositories
 
         public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
         {
+            //dbContext.Products.FromSqlRaw("SELECT * FROM Products WHERE Name LIKE @name",)
+            //return dbContext.Products.Select(p=>new Product() {Name=p.Name, Description=p.Description, Price=p.Price, Id=p.Id}).Where(p => p.Name.Contains(name)).AsEnumerable();
+
             return dbContext.Products.Where(p => p.Name.Contains(name)).AsEnumerable();
 
         }
