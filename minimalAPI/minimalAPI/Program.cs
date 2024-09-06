@@ -12,9 +12,7 @@ builder.Services.AddDbContext<TasksDbContext>(option=>option.UseSqlServer(connec
 
 var app = builder.Build();
 
-app.MapGet("/todoItems",async (TasksDbContext db)=>{
-    return await  db.Todos.ToListAsync();
-});
+app.MapGet("/todoItems",GetAllTodos);
 
 app.MapGet("/todoItems/complete", async (TasksDbContext db) => 
 await db.Todos.Where(t => t.IsComplete).ToListAsync());
@@ -68,3 +66,9 @@ app.UseHttpsRedirection();
 app.Run();
 
 
+
+
+static async Task<IResult> GetAllTodos(TasksDbContext db)
+{
+    return Results.Ok(await db.Todos.ToListAsync());
+}
