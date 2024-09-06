@@ -1,0 +1,26 @@
+﻿@minimalAPI_HostAddress = https://localhost:7129
+
+GET {{minimalAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{minimalAPI_HostAddress}}/todoItems
+
+###
+
+POST {{minimalAPI_HostAddress}}/todoItems
+Content-Type:application/json
+{
+  "name":"minimal api oluştur",
+  "isComplete":true
+}
+###
+
+PUT {{minimalAPI_HostAddress}}/todoItems/2
+Content-Type:application/json
+{
+  "name":"minimal api'ye request ekle",
+  "isComplete":true
+}
+###

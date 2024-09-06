@@ -1,3 +1,4 @@
+using eshop.API.Extensions;
 using eshop.API.Services;
 using eshop.Application.Contract.Repositories;
 using eshop.Application.Features.Products.Queries.GetAllProducts;
@@ -19,14 +20,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetProductsQueryHandler).Assembly));
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
+
+//builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(GetProductsQueryHandler).Assembly));
+//builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//builder.Services.AddScoped<IUserService, UserService>();
 
 
 var connectionString = builder.Configuration.GetConnectionString("db");
+builder.Services.AddInstances(connectionString);
 
-builder.Services.AddDbContext<EshopDbContext>(opt => opt.UseSqlServer(connectionString));
+//builder.Services.AddDbContext<EshopDbContext>(opt => opt.UseSqlServer(connectionString));
 
 builder.Services.AddCors(option => 
 {
